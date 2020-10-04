@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  nginx:
+    ports:
+      - 8080:80
+
+  db:
+    ports:
+      - 5432:5432
+    env_file:
+      - config/db/db_env
+
+  djangoapp:
+    ports:
+      - 8800:8800

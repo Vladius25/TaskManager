@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  djangoapp:
+    container_name: tm_django
+    restart: always
+    build: .
+    volumes:
+      - static_volume:/static:z
+    networks:
+      - nginx_network
+      - db_network
+    depends_on:
+      - db
+
+  nginx:
+    container_name: tm_nginx
+    restart: always
+    image: nginx:stable
+    volumes:
+      - ./config/nginx:/etc/nginx/conf.d:z
+      - static_volume:/static:z
+    depends_on:
+      - djangoapp
+    networks:
+      - nginx_network
+
+  db:
+    container_name: tm_db
+    restart: always
+    image: postgres:12
+    volumes:
+      - db_volume:/var/lib/postgresql/data:z
+    networks:
+      - db_network
+
+networks:
+  nginx_network:
+    driver: bridge
+  db_network:
+    driver: bridge
+
+volumes:
+  db_volume:
+  static_volume:

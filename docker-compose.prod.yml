@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  nginx:
+    ports:
+      - 80:80
+
+  db:
+    env_file:
+      - config/db/db_prod_env
