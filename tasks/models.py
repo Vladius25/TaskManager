@@ -17,7 +17,7 @@ class Task(models.Model):
     name = models.CharField("Название", max_length=30)
     description = models.TextField("Описание", max_length=250)
     creation_date = models.DateTimeField("Дата создания", auto_now_add=True)
-    status = models.ForeignKey(Status, on_delete=models.SET_NULL, null=True)
+    status = models.ForeignKey(Status, verbose_name="Статус", on_delete=models.SET_NULL, null=True)
     end_date = models.DateTimeField("Планируемая дата завершения")
     history = HistoricalRecords()
 
