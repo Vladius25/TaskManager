@@ -19,6 +19,7 @@ class Task(models.Model):
     creation_date = models.DateTimeField("Дата создания", auto_now_add=True)
     status = models.ForeignKey(Status, verbose_name="Статус", to_field='name', on_delete=models.SET_NULL, null=True)
     end_date = models.DateTimeField("Планируемая дата завершения", blank=True, null=True)
+    owner = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     history = HistoricalRecords()
 
     class Meta:
