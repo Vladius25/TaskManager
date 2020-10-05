@@ -17,9 +17,17 @@ class Task(models.Model):
     name = models.CharField("Название", max_length=30)
     description = models.TextField("Описание", max_length=250)
     creation_date = models.DateTimeField("Дата создания", auto_now_add=True)
-    status = models.ForeignKey(Status, verbose_name="Статус", to_field='name', on_delete=models.SET_NULL, null=True)
-    end_date = models.DateTimeField("Планируемая дата завершения", blank=True, null=True)
-    owner = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    status = models.ForeignKey(
+        Status,
+        verbose_name="Статус",
+        to_field="name",
+        on_delete=models.SET_NULL,
+        null=True,
+    )
+    end_date = models.DateTimeField(
+        "Планируемая дата завершения", blank=True, null=True
+    )
+    owner = models.ForeignKey("auth.User", on_delete=models.CASCADE)
     history = HistoricalRecords()
 
     class Meta:
@@ -28,5 +36,3 @@ class Task(models.Model):
 
     def __str__(self):
         return "%s) %s" % (self.id, self.name)
-
-

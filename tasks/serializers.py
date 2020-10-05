@@ -4,7 +4,7 @@ from tasks.models import Task
 
 
 class TaskSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source='owner.username')
+    owner = serializers.ReadOnlyField(source="owner.username")
 
     class Meta:
         model = Task
@@ -12,7 +12,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
 
 class HistoricalTaskSerializer(serializers.ModelSerializer):
-    update_date = serializers.ReadOnlyField(source='history_date')
+    update_date = serializers.ReadOnlyField(source="history_date")
 
     class Meta:
         model = Task

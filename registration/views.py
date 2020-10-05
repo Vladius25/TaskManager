@@ -9,7 +9,7 @@ from registration.serializers import UserSerializer
 class Register(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
 
     def post(self, request, *args, **kwargs):
         response = self.create(request, *args, **kwargs)

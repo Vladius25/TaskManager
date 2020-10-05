@@ -7,8 +7,8 @@ api_urlpatterns = [
 ]
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
     path("api/v1/", include(api_urlpatterns)),
     path("login/", obtain_jwt_token),
-    path("register/", include('registration.urls')),
+    path("register/", include("registration.urls")),
 ]

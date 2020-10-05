@@ -8,7 +8,9 @@ class RegistrationTest(APITestCase):
         self.client = APIClient()
 
     def test_register(self):
-        response = self.client.post('/register/', {"username": "test", "password": "123"})
+        response = self.client.post(
+            "/register/", {"username": "test", "password": "123"}
+        )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data["username"], "test")
         self.assertIn("token", response.data)
@@ -17,6 +19,6 @@ class RegistrationTest(APITestCase):
         user = User.objects.create(username="user")
         user.set_password("123")
         user.save()
-        response = self.client.post('/login/', {"username": "user", "password": "123"})
+        response = self.client.post("/login/", {"username": "user", "password": "123"})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("token", response.data)

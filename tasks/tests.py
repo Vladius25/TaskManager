@@ -21,14 +21,27 @@ class TestTasks(APITestCase):
         super(TestTasks, cls).setUpClass()
         new = Status.objects.create(name="Новая")
         work = Status.objects.create(name="В работе")
-        cls.task_dict = {"name": "name", "description": "descr", "status": "Новая", "end_date": "2020-10-01T00:00:00"}
+        cls.task_dict = {
+            "name": "name",
+            "description": "descr",
+            "status": "Новая",
+            "end_date": "2020-10-01T00:00:00",
+        }
         cls.user = User.objects.create(username="user")
         cls.user1 = User.objects.create(username="user1")
         cls.user2 = User.objects.create(username="user2")
-        cls.task1 = Task.objects.create(**{**cls.task_dict, 'status': new, 'owner': cls.user1})
-        cls.task2 = Task.objects.create(**{**cls.task_dict, 'status': work, 'owner': cls.user1})
-        cls.task3 = Task.objects.create(**{**cls.task_dict, 'status': work, 'owner': cls.user2})
-        cls.task4 = Task.objects.create(**{**cls.task_dict, 'status': new, 'owner': cls.user1})
+        cls.task1 = Task.objects.create(
+            **{**cls.task_dict, "status": new, "owner": cls.user1}
+        )
+        cls.task2 = Task.objects.create(
+            **{**cls.task_dict, "status": work, "owner": cls.user1}
+        )
+        cls.task3 = Task.objects.create(
+            **{**cls.task_dict, "status": work, "owner": cls.user2}
+        )
+        cls.task4 = Task.objects.create(
+            **{**cls.task_dict, "status": new, "owner": cls.user1}
+        )
 
     def setUp(self):
         self.client = get_client(self.user1)
@@ -72,17 +85,21 @@ class TestTasks(APITestCase):
             self.assertEqual(task["status"], task_status)
 
     def test_update_task_status(self):
-        response = self.client.patch("/api/v1/tasks/%s" % self.task4.id, {"status": "В работе"})
+        response = self.client.patch(
+            "/api/v1/tasks/%s" % self.task4.id, {"status": "В работе"}
+        )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         task = Task.objects.get(pk=self.task4.id)
         self.assertEqual(task.status.name, "В работе")
 
     def test_update_task_status_incorrect(self):
-        response = self.client.patch("/api/v1/tasks/%s" % self.task4.id, {"status": "bad"})
+        response = self.client.patch(
+            "/api/v1/tasks/%s" % self.task4.id, {"status": "bad"}
+        )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_task_history(self):
-        self.task1.name = 'new_task_name'
+        self.task1.name = "new_task_name"
         self.task1.save()
         response = self.client.get("/api/v1/tasks/history/%s" % self.task1.id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
