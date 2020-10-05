@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'simple_history',
     'tasks',
+    'registration',
 ]
 
 MIDDLEWARE = [
