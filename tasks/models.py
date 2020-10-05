@@ -3,7 +3,7 @@ from simple_history.models import HistoricalRecords
 
 
 class Status(models.Model):
-    name = models.CharField("Cтатус", max_length=30)
+    name = models.CharField("Cтатус", unique=True, max_length=30)
 
     class Meta:
         verbose_name = "Статус"
@@ -17,8 +17,8 @@ class Task(models.Model):
     name = models.CharField("Название", max_length=30)
     description = models.TextField("Описание", max_length=250)
     creation_date = models.DateTimeField("Дата создания", auto_now_add=True)
-    status = models.ForeignKey(Status, verbose_name="Статус", on_delete=models.SET_NULL, null=True)
-    end_date = models.DateTimeField("Планируемая дата завершения")
+    status = models.ForeignKey(Status, verbose_name="Статус", to_field='name', on_delete=models.SET_NULL, null=True)
+    end_date = models.DateTimeField("Планируемая дата завершения", blank=True, null=True)
     history = HistoricalRecords()
 
     class Meta:
