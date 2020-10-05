@@ -17,10 +17,14 @@ class GetCreateTasksView(generics.ListCreateAPIView):
                 queryset = queryset.filter(**{conditions[param_name]: query_params[param_name]})
         return queryset
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
 
 class GetUpdateDeleteTaskView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+
 
 
 class GetHistoryView(generics.RetrieveAPIView):
