@@ -15,6 +15,13 @@ class RegistrationTest(APITestCase):
         self.assertEqual(response.data["username"], "test")
         self.assertIn("token", response.data)
 
+    def test_register_dup(self):
+        User.objects.create(username="dup")
+        response = self.client.post(
+            "/register/", {"username": "dup", "password": "123"}
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
     def test_login(self):
         user = User.objects.create(username="user")
         user.set_password("123")
@@ -22,3 +29,10 @@ class RegistrationTest(APITestCase):
         response = self.client.post("/login/", {"username": "user", "password": "123"})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("token", response.data)
+
+    def test_login_incorrect(self):
+        user = User.objects.create(username="bad")
+        user.set_password("123")
+        user.save()
+        response = self.client.post("/login/", {"username": "bad", "password": "bad"})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
